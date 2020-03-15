@@ -147,12 +147,12 @@ ul.category {
     margin-bottom: 0.5em;
 }
 
-li a#toggle {
+a#toggle {
 
     position: fixed;
     bottom: 0.3em;
     right: 0.3em;
-    font-size: 0.66em;
+    font-size: 1em;
     margin: 1em;
 }
 

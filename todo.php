@@ -138,6 +138,6 @@ else if(isset($_POST['edit']) && strlen($_POST['desc']) > 0) {
 else if(isset($_POST['submit']) && strlen($_POST['desc']) > 0)
     postNewEntry($_POST['desc'], $_POST['cat'], $_POST['period']);
 
-header('Location: http://to.do');
+header('Location: /');
 
 ?>

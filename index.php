@@ -2,7 +2,7 @@
 <html>
     <title>💧️💧️</title>
     <link rel="shortcut icon" type="image/png" href="favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="todo.css?v2.2">
+    <link rel="stylesheet" type="text/css" href="todo.css?v2.3">
     <form action="todo.php" method="post">
 
     <div id="container">
@@ -122,13 +122,14 @@
 
             $thisWeekDone = false;
 
-            if (!isset($task_tree[0])) {
+            if (!isset($task_tree[0]))
+                echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">'.PERIODS[0].'</li>'."\n\t".'</ul>'."\n".'</div>';
 
-                echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">'.PERIODS[0].'</li>'."\n\t";
-                $thisWeekDone = true;
-
-                echo '<li><a href="todo.php?toggleFuturePeriods=1" title="Shortcut: Press \'f\'" id="toggle">'. (SHOW_FUTURE ? 'Hide' : 'Show') . ' Future Events</a></li>'."\n\t".'</ul>'."\n".'</div>';
-            }
+            
+            $onlyThisWeek = sizeof($task_tree) == 1 && isset($task_tree[0]);
+            
+            if (!$onlyThisWeek)
+                echo '<a href="todo.php?toggleFuturePeriods=1" title="Shortcut: Press \'f\'" id="toggle">'. (SHOW_FUTURE ? 'Hide' : 'Show') . ' Future Events</a>'."\n\t";
 
             function cSort($a, $b) {
 
@@ -145,7 +146,7 @@
 
                 uksort($p, "cSort");
 
-                echo '<div class="future period" ' . (SHOW_FUTURE ? '' : 'style="display: none').'"><ul>'."\n\t".'<li class="pTitle">'.PERIODS[$pkey].'</li>'."\n\t";
+                echo '<div class="future period" ' . (SHOW_FUTURE || $pkey == 'This Week' ? '' : 'style="display: none').'"><ul>'."\n\t".'<li class="pTitle">'.PERIODS[$pkey].'</li>'."\n\t";
 
                 foreach($p as $ckey => &$c) {
 
@@ -168,6 +169,12 @@
                 }
 
                 echo '</ul></div>';
+
+                if(SHOW_FUTURE && $onlyThisWeek) {
+
+                    echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">The Future</li>'."\n\t".'</ul>'."\n".'</div>';
+                    break;
+                }
             }
 
             // debug
@@ -185,9 +192,9 @@
             var inputInFocus = document.activeElement === document.getElementsByName("desc")[0];
 
             if (key === "Escape" && !inputInFocus)
-                window.location = "http://to.do";
+                window.location = "/";
             else if (key === "f" && !inputInFocus)
-                window.location = "http://to.do/todo.php?toggleFuturePeriods=1";
+                window.location = "todo.php?toggleFuturePeriods=1";
             else if (key === "/") {
 
                 event.preventDefault();
