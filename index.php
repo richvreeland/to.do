@@ -64,7 +64,7 @@
     }
 
     $params0 = "\t\t".'<input type="text" ';
-    $params1 = 'placeholder=">to.do"';
+    $params1 = 'placeholder=">to.do" title="Shortcut: Press \'/\'"';
     $params2 = ' name="desc" size="35">'."\n\t\t".'<select name="cat">'."\n\t\t\t".'<option disabled';
     $params3 = ' selected';
     $params4 = '>Category</option>'."\n";
@@ -113,7 +113,7 @@
         $command = escapeshellcmd('python cool-time.py');
         $output = shell_exec($command);
         $output = substr_replace($output, '<span id="blink">¯</span>', 8, 0);
-        echo '<div id="time">'.$output.'</div>'."\n\n";
+        echo '<div id="time" title="'.date('l, F dS @ g:ia', TIME).'">'.$output.'</div>'."\n\n";
 
         // keep periods in the right order.
         ksort($task_tree);
@@ -127,7 +127,7 @@
                 echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">'.PERIODS[0].'</li>'."\n\t";
                 $thisWeekDone = true;
 
-                echo '<li><a href="todo.php?toggleFuturePeriods=1" id="toggle">'. (SHOW_FUTURE ? 'Hide' : 'Show') . ' Future Events</a></li>'."\n\t".'</ul>'."\n".'</div>';
+                echo '<li><a href="todo.php?toggleFuturePeriods=1" title="Shortcut: Press \'f\'" id="toggle">'. (SHOW_FUTURE ? 'Hide' : 'Show') . ' Future Events</a></li>'."\n\t".'</ul>'."\n".'</div>';
             }
 
             function cSort($a, $b) {
