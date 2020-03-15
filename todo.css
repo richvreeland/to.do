@@ -1,0 +1,193 @@
+* {
+
+    color: #E4E2E0;
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    
+    display: none;
+}
+
+html {
+
+    background-image: url('bg.jpg');
+    background-repeat: repeat;
+    background-size: auto;
+}
+
+div#container {
+
+    background-color: #b37aff2e;
+    min-height: 100vh;
+}
+
+input, select {
+
+    font-size: 1em;
+    height: 2em;
+    padding: 0 0.5em;
+    /* background-color: #48414e; */
+    background-color: #735e7896;
+    border-color: #333;
+}
+
+input::placeholder {
+
+    color: #2d2137;
+}
+
+select {
+
+    margin: 0.5em 0 2em 0;
+}
+
+select:first-of-type {
+
+    margin-left: 1.5em;
+}
+
+select:last-of-type {
+
+    margin-right: 0.5em;
+}
+
+input[type='text'] {
+
+    width: 100%;
+    font-size: 2em;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 0.25em;
+}
+
+
+input[type='submit'] {
+
+    margin: 0.2em 0.2em 0.2em 0em;
+}
+
+input[type='button'] {
+
+    margin-left: 0.33em;
+}
+
+
+ul>ul>ul {
+
+    font-size: 0.75em;
+}
+
+ul {
+
+    font-size: 1.5em;
+    line-height: 1em;
+    list-style-type: none;
+}
+
+li {
+
+    margin-left: 0.7em;
+}
+
+.pTitleDone, .pTitle {
+
+    font-size: 1.5em;
+    padding: 0.5em 0 0.75em 0.5em;
+    margin-left: 0;
+}
+
+a {
+    text-decoration: none;
+    opacity: 0.5;
+}
+
+a:hover {
+
+    opacity: 1;
+}
+
+a.checkbox {
+
+    opacity: 1;
+}
+
+a:hover {
+
+    font-weight: bolder;
+}
+
+a.edit:hover {
+
+    color: orange;
+}
+
+a.delete:hover {
+
+    color: Red;
+}
+
+ul.category {
+
+    font-size: 1.2em;
+    padding: 0.8em 0 1.7em 0;
+}
+
+.cTitle {
+
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+}
+
+li a#toggle {
+
+    position: fixed;
+    bottom: 0.3em;
+    right: 0.3em;
+    font-size: 0.66em;
+    margin: 1em;
+}
+
+.pTitleDone {
+
+    padding-bottom: 0;
+}
+
+.pTitle, .pTitleDone {
+
+    font-size: 2em;
+    font-style:oblique;
+    text-shadow: 0.08em 0.08em black;
+}
+
+.task {
+
+    font-size: 0.9em;
+    padding-left: 1em;
+}
+
+.done {
+
+    text-decoration: line-through;
+    opacity: 0.25;
+}
+
+#time {
+
+    position: fixed;
+    top: 0.8em;
+    right: 0.8em;
+    font-size: 1.5em;
+  }
+
+#blink {
+    animation: blink-animation 2s steps(2, start) infinite;
+}
+  
+@keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
