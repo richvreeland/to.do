@@ -2,7 +2,7 @@
 <html>
     <title>💧️💧️</title>
     <link rel="shortcut icon" type="image/png" href="favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="todo.css?v2.3">
+    <link rel="stylesheet" type="text/css" href="todo.css?v2.31">
     <form action="todo.php" method="post">
 
     <div id="container">
@@ -120,12 +120,9 @@
 
         if ($list) {
 
-            $thisWeekDone = false;
-
             if (!isset($task_tree[0]))
                 echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">'.PERIODS[0].'</li>'."\n\t".'</ul>'."\n".'</div>';
 
-            
             $onlyThisWeek = sizeof($task_tree) == 1 && isset($task_tree[0]);
             
             if (!$onlyThisWeek)
@@ -157,12 +154,12 @@
 
                     foreach($c as $tkey => $task) {
 
-                        $doneMark = '<li class="task"><a class="checkbox" href="todo.php?markDone='.$tkey.'">[ ]</a> ';
+                        $doneMark = '<li class="task"><a class="checkbox" title="mark done." href="todo.php?markDone='.$tkey.'">[ ]</a> ';
                         if ($task->done)
-                            $doneMark = '<li class="task"><span class="done"><a class="checkbox" href="todo.php?markUndone='.$tkey.'">[X]</a> ';
+                            $doneMark = '<li class="task"><span class="done"><a class="checkbox" title="mark undone." href="todo.php?markUndone='.$tkey.'">[X]</a> ';
 
                         echo $doneMark.$task->desc.'</span>'.'
-                        <a class="edit" href="?editRecord='.$tkey.'">(~)</a><a class="delete" href="todo.php?deleteRecord='.$tkey.'">(x)</a></li>'."\n";
+                        <a class="edit" title="edit" href="?editRecord='.$tkey.'">(~)</a><a class="delete" title="delete" href="todo.php?deleteRecord='.$tkey.'">(x)</a></li>'."\n";
                     }
 
                     echo '</ul></ul>';
