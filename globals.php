@@ -1,5 +1,7 @@
 <?php
 
+// Categories
+
 class Category {
 
 	function __construct($emoji, $color, $sortPriority, $name) {
@@ -11,27 +13,25 @@ class Category {
 	}
 }
 
-define('TIME', time());
-
 $cats_txt = fread(fopen('categories.txt', 'r'), 1024*1024);
 $cats     = explode("\n", $cats_txt);
-
 $CATEGORIES = array();
-
 foreach ($cats as &$c) {
 
 	$c = explode(', ', $c);
 	$CATEGORIES[$c[3]] = new Category($c[0], $c[1], $c[2], $c[3]);
 }
-
 function catSort($a, $b) {
 
 	if ($a->sortPriority == $b->sortPriority)
 		return 0;
 	return ($a->sortPriority < $b->sortPriority) ? 1 : -1;
 }
-
 uasort($CATEGORIES, "catSort");
+
+//
+
+define('TIME', time());
 
 define('PERIODS',    array('This Week', 'Next Week', 'Two Weeks', 'Next Month', 'Next Quarter', 'Next Half', 'Next Year'));
 
@@ -42,6 +42,17 @@ define('NEXT_MONTH', strtotime("first day of next month", TIME));
 define('NEXT_QUARTER', getNextQuarter());
 define('NEXT_HALF', getNextHalf());
 define('NEXT_YEAR', getNextOccurrence("January 1st"));
+
+
+define('SHOW_FUTURE', GetSetting(0));
+
+function GetSetting($index) {
+
+	$settings = fread(fopen('settings.txt', 'r'), 1024*1024);
+	$settings = explode("\n", $settings);
+	$setting = $settings[$index];
+	return explode(': ', $setting)[1];
+}
 
 function getNextQuarter() {
 

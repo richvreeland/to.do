@@ -81,8 +81,24 @@ function deleteRecord($id, $cachefile) {
     file_put_contents('list.txt', $output);
 }
 
+if (isset($_GET['toggleFuturePeriods'])) {
+
+    $settings = fread(fopen('settings.txt', 'r'), 1024*1024);
+    $settings = explode("\n", $settings);
+
+    $setting = $settings[0];
+
+    list($k, $v) = explode(': ', $setting);
+
+    $v = $v == 1 ? 0 : 1;
+
+    $settings[0] = $k . ': ' . $v;
+
+    $output = implode("\n", $settings);
+    file_put_contents('settings.txt', $output);
+}
 // find requested record and remove it from list.txt
-if(isset($_GET['deleteRecord'])) {
+else if(isset($_GET['deleteRecord'])) {
 
     deleteRecord($_GET['deleteRecord'], 'delete-cache.txt', FILE_APPEND);
 }

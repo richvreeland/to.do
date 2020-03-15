@@ -68,7 +68,7 @@
     $params4 = '>Category</option>'."\n";
 
     foreach($CATEGORIES as $k => $v)
-        $params5 .= "\t\t\t".'<option>' . $v->emoji . ' ' . $k . '</option>' . "\n";
+        $params5 .= "\t\t\t".'<option value="'.$k.'">' . $v->emoji . ' ' . $k . '</option>' . "\n";
 
     $params6 = "\t\t".'</select>'."\n\t\t".'<select name="period">'."\n\t\t\t".'<option disabled selected>Period</option>'."\n";
         
@@ -94,7 +94,7 @@
 
         // set up category pulldown
         foreach($CATEGORIES as $k => $v)
-            $params5 .= "\t\t\t".'<option' . ($r->category->name == $k ? ' selected' : '') . '>' . $v->emoji . ' ' . $k . '</option>' . "\n";
+            $params5 .= "\t\t\t".'<option' . ($r->category->name == $k ? ' selected' : '') . ' value="'.$k.'">' . $v->emoji . ' ' . $k . '</option>' . "\n";
         // set up period pulldown
         for ($p = 0; $p < sizeof(PERIODS); $p++)
             $params7 .= "\t\t\t".'<option ' . ($r->period == $p ? 'selected ' : '') . 'value='.$p.'>' . PERIODS[$p] . '</option>' . "\n";
@@ -122,7 +122,7 @@
                 echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">'.PERIODS[0].'</li>'."\n\t";
                 $thisWeekDone = true;
 
-                echo '<li><a href="#" id="toggle" onclick="toggleFuturePeriods()">Show Future Events</a></li>'."\n\t".'</ul>'."\n".'</div>';
+                echo '<li><a href="todo.php?toggleFuturePeriods=1" id="toggle">'. (SHOW_FUTURE ? 'Hide' : 'Show') . ' Future Events</a></li>'."\n\t".'</ul>'."\n".'</div>';
             }
 
             function cSort($a, $b) {
@@ -140,7 +140,7 @@
 
                 uksort($p, "cSort");
 
-                echo '<div class="future period" style="display: none"><ul>'."\n\t".'<li class="pTitle">'.PERIODS[$pkey].'</li>'."\n\t";
+                echo '<div class="future period" ' . (SHOW_FUTURE ? '' : 'style="display: none').'"><ul>'."\n\t".'<li class="pTitle">'.PERIODS[$pkey].'</li>'."\n\t";
 
                 foreach($p as $ckey => &$c) {
 
@@ -179,21 +179,5 @@
             if (key === "Escape")
                 window.location = "http://to.do";
         });
-
-        function toggleFuturePeriods() {
-
-            var elems = document.getElementsByClassName("future");
-            var toggle = document.getElementById("toggle");
-
-            for (i = 0; i < elems.length; i++)
-                if (elems[i].style.display === "none") {
-                    elems[i].style.display = "block";
-                    toggle.textContent = "Hide Future Events";
-                }
-                else {
-                    elems[i].style.display = "none";
-                    toggle.textContent = "Show Future Events";
-                }
-        }
     </script>
 </html>
