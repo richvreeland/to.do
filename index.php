@@ -1,6 +1,8 @@
 <?php require_once 'globals.php'; ?>
 <html>
-    <link rel="stylesheet" type="text/css" href="todo.css?v2.1">
+    <title>💧️💧️</title>
+    <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="todo.css?v2.2">
     <form action="todo.php" method="post">
 
     <div id="container">
@@ -62,16 +64,19 @@
     }
 
     $params0 = "\t\t".'<input type="text" ';
-    $params1 = 'placeholder="to.do | new task"';
+    $params1 = 'placeholder=">to.do"';
     $params2 = ' name="desc" size="35">'."\n\t\t".'<select name="cat">'."\n\t\t\t".'<option disabled';
     $params3 = ' selected';
     $params4 = '>Category</option>'."\n";
+    $params5 = '';
 
     foreach($CATEGORIES as $k => $v)
         $params5 .= "\t\t\t".'<option value="'.$k.'">' . $v->emoji . ' ' . $k . '</option>' . "\n";
 
     $params6 = "\t\t".'</select>'."\n\t\t".'<select name="period">'."\n\t\t\t".'<option disabled selected>Period</option>'."\n";
-        
+    
+    $params7 = '';
+
     for ($i = 0; $i < sizeof(PERIODS); $i++)
         $params7 .= "\t\t\t".'<option value='.$i.'>' . PERIODS[$i] . '</option>' . "\n";
 
@@ -176,8 +181,19 @@
     <script type="text/javascript">
         document.addEventListener('keydown', function(event) {
             const key = event.key; // Or const {key} = event; in ES6+
-            if (key === "Escape")
+
+            var inputInFocus = document.activeElement === document.getElementsByName("desc")[0];
+
+            if (key === "Escape" && !inputInFocus)
                 window.location = "http://to.do";
+            else if (key === "f" && !inputInFocus)
+                window.location = "http://to.do/todo.php?toggleFuturePeriods=1";
+            else if (key === "/") {
+
+                event.preventDefault();
+                document.getElementsByName("desc")[0].focus();
+            }
+                
         });
     </script>
 </html>
