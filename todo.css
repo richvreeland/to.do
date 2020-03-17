@@ -1,200 +1,255 @@
-* {
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
 
-    color: #E4E2E0;
-    font-family: monospace;
+* {
+    font-family: 'Ubuntu Mono';
     margin: 0;
     padding: 0;
 }
 
-::-webkit-scrollbar {
-    
+::-webkit-scrollbar { 
     display: none;
 }
 
 html {
+    
+    color: #E4E2E0;
+    background-color: #2b2435;
+}
 
-    background-image: url('bg.jpg');
-    background-repeat: repeat;
-    background-size: auto;
+body {
+
+    overflow-x: hidden;
+	overscroll-behavior-y: none;
+    background: repeating-linear-gradient(to top left, #46209ecc, #2b2435, #2b2435 10%);
+    animation: bg-anim 8s linear infinite;
+    background-size: 50em 50em;
+}
+
+@keyframes bg-anim {
+
+    0%    { background-position: 0em  0; }
+    100%  { background-position: 50em 0; }
 }
 
 div#container {
-
-    background-color: #b37aff2e;
     min-height: 100vh;
+    background: linear-gradient(#2b243500, #2b2435FF);
+}
+
+input {
+    font-size: 1.75em;
 }
 
 input, select {
+    background-color: #1c172400;
+    border: none;
+    caret-color: #706676;
+}
 
-    font-size: 1em;
-    height: 2em;
-    padding: 0 0.5em;
-    /* background-color: #48414e; */
-    background-color: #735e7896;
-    border-color: #333;
+input[name="desc"] {
+    color: #706676;
+    width: 100%;
+    height: 2.5em;
+    margin-bottom: 0.5em;
+    padding-left: 0.75em;
+    margin-bottom: -0.75em;
+    background: linear-gradient(#2b2435, #00000000);
 }
 
 input::placeholder {
-
-    color: #2d2137;
+    color: #3d4372;
+    line-height: 1;
+    letter-spacing: -12;
 }
 
 input:focus::-webkit-input-placeholder { 
-
     color:transparent;
 }
 
-select {
-
-    margin: 0.5em 0 2em 0;
+#taskHUD {
+    font-size: 0.9em;
+    padding-left: 1.5em;
+    position: relative;
+    width: calc(1000px + 100% - 1.5em);
+    overflow:hidden;
+    padding-bottom: 1.25em;
 }
 
-select:first-of-type {
-
-    margin-left: 1.5em;
-}
-
-select:last-of-type {
-
-    margin-right: 0.5em;
-}
-
-input[type='text'] {
-
-    width: 100%;
-    font-size: 2em;
-    border-style: solid;
-    border-width: 1px;
-    margin-bottom: 0.25em;
-    padding-left: 0.75em;
-}
-
-
-input[type='submit'] {
-
-    margin: 0.2em 0.2em 0.2em 0em;
-}
-
-input[type='button'] {
-
-    margin-left: 0.33em;
-}
-
-
-ul>ul>ul {
-
-    font-size: 0.75em;
-    line-height: 1.2em;
+#twodew {
+    letter-spacing: -10;
+    margin-right: 0.75em;    
 }
 
 ul {
-
-    font-size: 1.5em;
-    line-height: 1em;
     list-style-type: none;
 }
 
 li {
-
-    margin-left: 0.7em;
+    padding-left: 20px;
 }
 
-.pTitleDone, .pTitle {
-
-    font-size: 1.5em;
-    padding: 0.5em 0 0.75em 0.5em;
-    margin-left: 0;
-}
-
+/* link-related */
 a {
     text-decoration: none;
-    opacity: 0.5;
+    opacity: 0.5 !important;
+    color: inherit;
 }
-
 a:hover {
-
-    opacity: 1;
-}
-
-a.checkbox {
-
-    opacity: 1;
-}
-
-a:hover {
-
+    opacity: 1 !important;
     font-weight: bolder;
 }
-
-a.edit:hover {
-
-    color: orange;
+a.checkbox {opacity: 1;}
+a.edit:hover {color: orange;}
+a.delete:hover { color: Red;}
+.task a:hover {
+    text-shadow: 0.2em 0.2em black;
 }
 
-a.delete:hover {
-
-    color: Red;
+.pTitle {
+    letter-spacing: 0.5em;
+    margin-bottom: -0.33em;
 }
 
-ul.category {
-
-    font-size: 1.2em;
-    padding: 0.8em 0 1.7em 0;
+.period {
+    font-size: 2em;
 }
 
-.cTitle {
+.period ul.category:first-of-type {
 
-    margin-top: 0.25em;
-    margin-bottom: 0.5em;
-}
-
-a#toggle {
-
-    position: fixed;
-    bottom: 0.3em;
-    right: 0.3em;
-    font-size: 1em;
-    margin: 1em;
-}
-
-.pTitleDone {
-
-    padding-bottom: 0;
+    padding-top: 0.33em;
 }
 
 .pTitle, .pTitleDone {
-
-    font-size: 2em;
+    font-size: 44px;
     font-style:oblique;
     text-shadow: 0.08em 0.08em black;
 }
 
-.task {
+ul.category table {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
 
-    font-size: 0.9em;
-    padding-left: 1em;
+
+div.period {
+    background: linear-gradient(#2b243500, #2b2435AA 10%,  #2b2435AA 90%, #2b243500 100%);
+}
+
+div:last-of-type {
+    background: linear-gradient(#2b243500, #2b2435AA 10%);
+}
+
+tr.cTitle td {
+    font-size: 1.75em;
+    letter-spacing: 0.2em;
+    padding-bottom: 0.25em;
+}
+
+/* task related */
+table {
+    margin-left: 1.5em;
+    padding-right: 1.5em;
+}
+td.checkbox {
+    vertical-align: top;
+    position: relative;
+    top: 0.2em;
+    padding-right: 1.75em;
+    white-space: nowrap;
+    font-size: 0.75em;
+}
+
+.task {
+    font-size: 1.1em;
+    line-height: 1;
+    letter-spacing: 0.85;
+}
+
+.task a {
+
+    opacity: 1 !important;
+}
+
+.taskbody {
+    display:inline-block;
+    max-width: auto;
 }
 
 .done {
-
     text-decoration: line-through;
     opacity: 0.25;
 }
+.checkbox, .edit, .delete {
+    text-decoration: none !important;
+}
 
-#time {
+.edit, .delete {
+    font-size: 0.75em;
+}
+
+a#toggle {
+    position: fixed;
+    font-size: 1em;
+    bottom: 10px;
+    right: 10px;
+}
+
+#hiddenprompt {
+
+    padding: 2em;
+    background-color: #6d587d;
+    box-shadow: 0em 0em 50px #00000088;
+    padding: 1em;
+    border-radius: 1em;
 
     position: fixed;
-    top: 0.8em;
-    right: 0.8em;
-    font-size: 1.5em;
-  }
-
-#blink {
-    animation: blink-animation 2s steps(2, start) infinite;
+    top: 40%;
+    left: 10%;
+    right:10%;
 }
-  
-@keyframes blink-animation {
-    to {
-      visibility: hidden;
-    }
-  }
+
+#hiddenprompt a {
+    opacity: 1 !important;
+    font-size: 1em;
+    padding: 0.2em 1em;
+    background-color: #00000033;
+    border-radius: 5px;
+}
+
+#hiddenprompt a:hover {
+    text-decoration: underline;
+}
+
+#hiddenprompt input, #hiddenprompt select {
+    color: white;
+    border: 1px solid #00000033;
+}
+
+#promptDesc {
+
+    font-size: 1em;
+    background-color: #2b243588;
+
+    margin: 0 0 0.5em 0;
+    border-radius: 0.5em;
+    padding: 1em;
+}
+
+#hiddenprompt select {
+
+    background-color: #2b243588;
+    height: 2em;
+    vertical-align: middle;
+    font-size: 0.8em;
+    margin: 0 0 2em 0;
+}
+
+#hiddenprompt p {
+
+    text-align: right;
+}
+
+/* Portrait Overrides */
+/* @media (max-aspect-ratio: 3/3) {} */
+/* Landscape Overrides */
+/* @media (min-aspect-ratio: 3/3) {} */

@@ -1,0 +1,35 @@
+# Pretty Permalinks
+Options +FollowSymLinks -MultiViews
+RewriteEngine on
+
+# Remove Trailing Slash
+RewriteRule ^(.*)/$ $1 [R=301,L]
+# Remove Trailing Index
+RewriteCond %{THE_REQUEST} index.php
+RewriteRule (.*)index.php$ $1 [R=301,L]
+
+<FilesMatch "\.(css|php|js|txt)$">
+
+	<IfModule mod_expires.c>
+		ExpiresActive Off
+	</IfModule>
+
+	<IfModule mod_headers.c> 
+		FileETag None
+		Header unset ETag
+		Header unset Pragma
+		Header unset Cache-Control
+		Header unset Last-Modified
+		Header set Pragma "no-cache"
+		Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+		Header set Expires "Thu, 1 Jan 1970 00:00:00 GMT"
+	</IfModule>
+
+</FilesMatch> 
+
+# DISABLE CACHING
+#  <IfModule mod_headers.c>
+#  	Header set Cache-Control "no-cache, no-store, must-revalidate" 
+# 	Header set Pragma "no-cache"
+# 	Header set Expires 0
+# </IfModule> 

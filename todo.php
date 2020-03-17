@@ -83,9 +83,8 @@ function deleteRecord($id, $cachefile) {
 
 if (isset($_GET['toggleFuturePeriods'])) {
 
-    $settings = fread(fopen('settings.txt', 'r'), 1024*1024);
-    $settings = explode("\n", $settings);
-
+    $file = fread(fopen('settings.txt', 'r'), 1024*1024);
+    $settings = explode("\n", $file);
     $setting = $settings[0];
 
     list($k, $v) = explode(': ', $setting);
@@ -135,9 +134,9 @@ else if(isset($_POST['edit']) && strlen($_POST['desc']) > 0) {
     file_put_contents('list.txt', $output);
 }
 // add a new record if we actually submitted something useful.
-else if(isset($_POST['submit']) && strlen($_POST['desc']) > 0)
+else if(isset($_POST['create']) && strlen($_POST['desc']) > 0)
     postNewEntry($_POST['desc'], $_POST['cat'], $_POST['period']);
 
-header('Location: /');
+header('Location: ./');
 
 ?>

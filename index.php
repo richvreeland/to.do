@@ -1,203 +1,313 @@
 <?php require_once 'globals.php'; ?>
 <html>
-    <title>💧️💧️</title>
+    <title>two.dew</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="todo.css?v2.31">
-    <form action="todo.php" method="post">
-
+    <link rel="stylesheet" type="text/css" href="todo.css?v2.32">
     <div id="container">
+        
     <?php
 
-    $list = fread(fopen('list.txt', 'r'), 1024*1024);
+        $list = fread(fopen('list.txt', 'r'), 1024*1024);
 
-    class Task {
+        class Task {
 
-        function __construct($desc, $timestamp, $category, $period, $done)
-        {
-            $this->desc = $desc;
-            $this->timestamp = $timestamp;
-
-            $this->category = $category;
-            $this->period = $period;
-
-            $this->done = $done;
+            function __construct($desc, $timestamp, $category, $period, $done) {
+                $this->desc = $desc;
+                $this->timestamp = $timestamp;
+                $this->category = $category;
+                $this->period = $period;
+                $this->done = $done;
+            }
         }
-    }
-
-    if ($list) {
-
-        $entries = explode("\n\n", $list); //sort($entries); sorting causes some issues with keeping 1:1 b/w files, need to fix
-        $task_tree = array();
-        $tasks = array();
-
-        $i = 0;
-
-        foreach ($entries as &$e) {
-
-            if (substr_count($e, "\n") < 3)
-                continue;
-
-            list($cat, $desc, $timestamp, $done) = array_pad(explode("\n", $e), 4, null);
-
-                $period = 6;
-            if ($timestamp < NEXT_WEEK)
-                $period = 0;
-            else if ($timestamp < TWO_WEEKS)
-                $period = 1;
-            else if ($timestamp < NEXT_MONTH)
-                $period = 2;
-            else if ($timestamp < NEXT_QUARTER)
-                $period = 3;
-            else if ($timestamp < NEXT_HALF)
-                $period = 4;
-            else if ($timestamp < NEXT_YEAR)
-                $period = 5;
-
-            if(!isset($task_tree[$period]))
-                $task_tree[$period] = array();
-            if(!isset($task_tree[$period][$cat]))
-                $task_tree[$period][$cat] = array();
-                
-            $tasks[$i++] = new Task($desc, $timestamp, $CATEGORIES[$cat], $period, $done == 'closed');
-            $task_tree[$period][$cat][$i-1] = $tasks[$i-1];
-        }
-    }
-
-    $params0 = "\t\t".'<input type="text" ';
-    $params1 = 'placeholder=">to.do" title="Shortcut: Press \'/\'"';
-    $params2 = ' name="desc" size="35">'."\n\t\t".'<select name="cat">'."\n\t\t\t".'<option disabled';
-    $params3 = ' selected';
-    $params4 = '>Category</option>'."\n";
-    $params5 = '';
-
-    foreach($CATEGORIES as $k => $v)
-        $params5 .= "\t\t\t".'<option value="'.$k.'">' . $v->emoji . ' ' . $k . '</option>' . "\n";
-
-    $params6 = "\t\t".'</select>'."\n\t\t".'<select name="period">'."\n\t\t\t".'<option disabled selected>Period</option>'."\n";
-    
-    $params7 = '';
-
-    for ($i = 0; $i < sizeof(PERIODS); $i++)
-        $params7 .= "\t\t\t".'<option value='.$i.'>' . PERIODS[$i] . '</option>' . "\n";
-
-    $params8 = "\t\t".'</select>';
-    $params9 =  '<input type="submit" name="submit" value="+">';
-    $paramsA = '';
-    $paramsB = "\n\t".'</form>'."\n\n";
-
-    $editMode = isset($_GET['editRecord']);
-
-    if($editMode) {
-
-        $id = $_GET['editRecord'];
-        $r = $tasks[$id];
-
-        $params1 = 'value="'.$r->desc.'"';
-        $params3 = '';
-        $params5 = '';
-        $params7 = '';
-
-        // set up category pulldown
-        foreach($CATEGORIES as $k => $v)
-            $params5 .= "\t\t\t".'<option' . ($r->category->name == $k ? ' selected' : '') . ' value="'.$k.'">' . $v->emoji . ' ' . $k . '</option>' . "\n";
-        // set up period pulldown
-        for ($p = 0; $p < sizeof(PERIODS); $p++)
-            $params7 .= "\t\t\t".'<option ' . ($r->period == $p ? 'selected ' : '') . 'value='.$p.'>' . PERIODS[$p] . '</option>' . "\n";
-            
-        $params9 = '<input type="hidden" name="id" value="'.$id.'"><input type="submit" name="edit" value="~">';
-        $paramsA = '<input type="button" value="cancel" onclick="location.href=\'/\';">';
-    }
-
-    echo $params0.$params1.$params2.$params3.$params4.$params5.$params6.$params7.$params8.$params9.$paramsA.$paramsB;
-
-        $command = escapeshellcmd('python cool-time.py');
-        $output = shell_exec($command);
-        $output = substr_replace($output, '<span id="blink">¯</span>', 8, 0);
-        echo '<div id="time" title="'.date('l, F dS @ g:ia', TIME).'">'.$output.'</div>'."\n\n";
-
-        // keep periods in the right order.
-        ksort($task_tree);
 
         if ($list) {
 
-            if (!isset($task_tree[0]))
-                echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">'.PERIODS[0].'</li>'."\n\t".'</ul>'."\n".'</div>';
+            $entries = explode("\n\n", $list);
+            $task_tree = array();
+            $tasks = array();
 
-            $onlyThisWeek = sizeof($task_tree) == 1 && isset($task_tree[0]);
-            
-            if (!$onlyThisWeek)
-                echo '<a href="todo.php?toggleFuturePeriods=1" title="Shortcut: Press \'f\'" id="toggle">'. (SHOW_FUTURE ? 'Hide' : 'Show') . ' Future Events</a>'."\n\t";
+            $i = 0;
 
-            function cSort($a, $b) {
+            foreach ($entries as &$e) {
 
-                global $CATEGORIES;
+                if (substr_count($e, "\n") < 3)
+                    continue;
 
-                if ($CATEGORIES[$a]->sortPriority == $CATEGORIES[$b]->sortPriority )
-                    return 0;
-                return ($CATEGORIES[$a]->sortPriority < $CATEGORIES[$b]->sortPriority ? 1 : -1);
+                list($cat, $desc, $timestamp, $done) = array_pad(explode("\n", $e), 4, null);
+
+                    $period = 6;
+                if ($timestamp < NEXT_WEEK)
+                    $period = 0;
+                else if ($timestamp < TWO_WEEKS)
+                    $period = 1;
+                else if ($timestamp < NEXT_MONTH)
+                    $period = 2;
+                else if ($timestamp < NEXT_QUARTER)
+                    $period = 3;
+                else if ($timestamp < NEXT_HALF)
+                    $period = 4;
+                else if ($timestamp < NEXT_YEAR)
+                    $period = 5;
+
+                if(!isset($task_tree[$period]))
+                    $task_tree[$period] = array();
+                if(!isset($task_tree[$period][$cat]))
+                    $task_tree[$period][$cat] = array();
+                    
+                $tasks[$i++] = new Task($desc, $timestamp, $CATEGORIES[$cat], $period, $done == 'closed');
+                $task_tree[$period][$cat][$i-1] = $tasks[$i-1];
             }
+        }
+    ?>
+<!-- BUILD THE TASK FORM -->
+        <form action="todo.php" method="post" id="taskForm">
+            <input type="text" placeholder=">    💧️💧️" autocomplete="off" title="Shortcut: Press \'/\'" name="desc" size="35">
+            <input type="hidden" name="cat">
+            <input type="hidden" name="period">
+            <input type="hidden" name="create">
+        </form>
+<!-- END TASK FORM -->
+    <?php
+        echo '<div id="taskHUD" style="left: -1000px;">👆enter: task \category \period</div>';
 
-            foreach ($task_tree as $pkey => &$p) {
+            // keep periods in the right order.
+            ksort($task_tree);
 
-                reset($CATEGORIES);
+            if ($list) {
 
-                uksort($p, "cSort");
+                if (!isset($task_tree[0]))
+                    echo '<div class="period">'."\n\t\t".'<ul>'."\n\t\t\t".'<li class="pTitleDone done">'.PERIODS[0].'</li>'."\n\t\t".'</ul>'."\n\t".'</div>'."\n\t";
 
-                echo '<div class="future period" ' . (SHOW_FUTURE || $pkey == 'This Week' ? '' : 'style="display: none').'"><ul>'."\n\t".'<li class="pTitle">'.PERIODS[$pkey].'</li>'."\n\t";
+                $onlyThisWeek = sizeof($task_tree) == 1 && isset($task_tree[0]);
+                
+                if (!$onlyThisWeek)
+                    echo '<a href="todo.php?toggleFuturePeriods=0" title="Shortcut: Press \'f\'" id="toggle">'. (SHOW_FUTURE ? 'Hide' : 'Show') . ' Future Events</a>'."\n\t";
 
-                foreach($p as $ckey => &$c) {
+                // sort function to keep categories in priority order.
+                function cSort($a, $b) {
+                    global $CATEGORIES;
+                    if ($CATEGORIES[$a]->sortPriority == $CATEGORIES[$b]->sortPriority )
+                        return 0;
+                    return ($CATEGORIES[$a]->sortPriority < $CATEGORIES[$b]->sortPriority ? 1 : -1);
+                }
 
-                    if (!isset($c))
-                        continue;
+                $i = 0;
 
-                    echo '<ul class="category" style="background-image: linear-gradient('.$CATEGORIES[$ckey]->color.', #00000000);">'."\n\t".'<li class="cTitle">'.$CATEGORIES[$ckey]->emoji.' '.$ckey.'</li>'."\n\t".'<ul>';
+                foreach ($task_tree as $pkey => &$p) {
 
-                    foreach($c as $tkey => $task) {
+                    reset($CATEGORIES);
+                    uksort($p, "cSort");
+                    $thisWeek = $pkey == 'This Week';
+                    echo '<div class="'.(!$thisWeek ? 'future ' : '').'period"' . (SHOW_FUTURE || $thisWeek ? '' : ' style="display: none"').'>'."\n\t\t".'<ul>'."\n\t\t\t".'<li class="pTitle">'.PERIODS[$pkey].'</li>'."\n\t";
 
-                        $doneMark = '<li class="task"><a class="checkbox" title="mark done." href="todo.php?markDone='.$tkey.'">[ ]</a> ';
-                        if ($task->done)
-                            $doneMark = '<li class="task"><span class="done"><a class="checkbox" title="mark undone." href="todo.php?markUndone='.$tkey.'">[X]</a> ';
+                    foreach($p as $ckey => &$c) {
 
-                        echo $doneMark.$task->desc.'</span>'.'
-                        <a class="edit" title="edit" href="?editRecord='.$tkey.'">(~)</a><a class="delete" title="delete" href="todo.php?deleteRecord='.$tkey.'">(x)</a></li>'."\n";
+                        if (!isset($c))
+                            continue;
+
+                        echo '<ul class="category" style="background-image: linear-gradient('.$CATEGORIES[$ckey]->color.', #00000000);">'."\n\t".'<table><tr class="cTitle"><td>'.$CATEGORIES[$ckey]->emoji.'</td><td>'.$ckey.'</td></tr>'."\n\t";
+
+                        foreach($c as $tkey => $task) {
+
+                            $p1 = '<tr class="task"><td class="checkbox"><a title="mark ';
+
+                            $doneMark = 'done." href="todo.php?markDone='.$tkey.'">[ ]</a></td>';
+                            if ($task->done)
+                                $doneMark = 'undone." href="todo.php?markUndone='.$tkey.'">[X]</a></td>';
+
+                            echo $p1.$doneMark.'<td class="taskbody">'.'<span class="desc'.($task->done ? ' done' : '').'"><a href="#" onclick="showPrompt(\''.$task->desc,'\', '.$tkey.', \''.$ckey.'\', \''.$pkey.'\'); return false;">'.$task->desc.'</a></span>
+                            </td></tr>'."\n";
+                        }
+
+                        echo '</table></ul>';
                     }
 
-                    echo '</ul></ul>';
+                    $i++;
+
+                    echo '</ul></div>';
+
+                    if(SHOW_FUTURE && $onlyThisWeek) {
+
+                        echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">The Future</li>'."\n\t".'</ul>'."\n".'</div>';
+                        break;
+                    }
                 }
 
-                echo '</ul></div>';
-
-                if(SHOW_FUTURE && $onlyThisWeek) {
-
-                    echo '<div class="period">'."\n".'<ul>'."\n\t".'<li class="pTitleDone done">The Future</li>'."\n\t".'</ul>'."\n".'</div>';
-                    break;
-                }
+                // debug
+                //echo '<pre>'.nl2br(print_r($task_tree, true)).'</pre>'."\n";
             }
-
-            // debug
-            //echo '<pre>'.nl2br(print_r($task_tree, true)).'</pre>'."\n";
-        }
-        else
-            echo 'list is empty.';
-
+            else
+                echo 'list is empty.';
     ?>
     </div>
+    <div id="hiddenprompt" style="visibility: hidden;">
+        <form action="todo.php" method="post" id="promptForm">
+            <input type="text" id="promptDesc" name="desc"></input>
+            <select name="cat" id="promptCat">
+            <?php  
+                foreach($CATEGORIES as $k => $v)
+                    echo "\t\t\t".'<option value="'.$k.'">' . $v->emoji . ' ' . $k . '</option>' . "\n"; 
+            ?>
+            </select>
+            <select name="period" id="promptPeriod">
+            <?php
+                for ($i = 0; $i < sizeof(PERIODS); $i++)
+                    echo "\t\t\t".'<option value='.$i.'>' . PERIODS[$i] . '</option>' . "\n";
+            ?>
+            </select><br/>
+            <p>
+                <a name="editLink" href="#" onclick="submitPrompt();">Edit</a>
+                <a name="deleteLink" href="">Delete</a>
+                <a name="cancel" href="#" onclick="cancelDelete(); return false;">Cancel</a>
+            </p>
+            <input type="hidden" id="promptID" name="id"><input type="hidden" name="edit">
+        </form>
+    </div>
     <script type="text/javascript">
+
+        var categories;
+        var periods = ['This Week', 'Next Week', 'Two Weeks', 'Next Month', 'Next Quarter', 'Next Half', 'Next Year'];
+        // secondary shorthand for better matching. (this week / two weeks conflict).
+        var periodShorthand = ['0', '1', '2', 'm 3', 'q 4', 'h 5', 'y 6'];
+
+        $taskOnly = '';
+        $origHTML = document.getElementById('taskHUD').innerHTML;
+        $category = '';
+
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", 'categories.txt', true);
+        rawFile.onreadystatechange = function () {
+
+            if(rawFile.readyState === 4)
+                if(rawFile.status === 200 || rawFile.status == 0)
+                    asyncParseCategories(rawFile.responseText);
+        }
+        rawFile.send(null);
+
+        function asyncParseCategories(text) {
+
+            // get each category as a separate string.
+            categories = text.split(/\n/g);
+
+            // get each cat property as a separate string.
+            for (var i = 0; i < categories.length; i++)
+                categories[i] = categories[i].split(', ');
+        }
+
+        function onInputFocus() {
+
+            document.getElementById('taskHUD').style.left = document.activeElement === document.getElementsByName("desc")[0] ? '0' : '-1000'; 
+        }
+
+        document.addEventListener('click', function(event) { onInputFocus(); });
+
         document.addEventListener('keydown', function(event) {
+
             const key = event.key; // Or const {key} = event; in ES6+
 
-            var inputInFocus = document.activeElement === document.getElementsByName("desc")[0];
+            var taskBar   = document.getElementsByName('desc')[0];
+            var promptBar = document.getElementById('promptDesc');
 
-            if (key === "Escape" && !inputInFocus)
-                window.location = "/";
-            else if (key === "f" && !inputInFocus)
-                window.location = "todo.php?toggleFuturePeriods=1";
-            else if (key === "/") {
+            var focusOnTaskInput   = document.activeElement === taskBar
+            var focusOnPromptInput = document.activeElement === promptBar;
 
-                event.preventDefault();
-                document.getElementsByName("desc")[0].focus();
+            var focusOnPrompt = document.activeElement == document.forms[1];
+
+            if (focusOnPrompt)
+                if (key === "Enter")
+                    submitPrompt();
+
+            if (!focusOnTaskInput && !focusOnPromptInput) {
+
+                if (key === "Escape")
+                    window.location = "./";
+                else if (key === "f")
+                    window.location = "todo.php?toggleFuturePeriods=0";
+                else if (key === "/") {
+
+                    event.preventDefault();
+                    document.getElementsByName("desc")[0].focus();
+                    onInputFocus();
+                }
             }
-                
+            else if (key === "Enter" && focusOnTaskInput)
+                document.getElementsByName('desc')[0].value = $taskOnly;
         });
+
+        document.addEventListener('keyup', function(event) {
+
+            if (document.activeElement === document.getElementsByName("desc")[0]) {
+
+                $userInput = document.getElementsByName("desc")[0].value;
+
+                $taskOnly = $userInput.replace(/\\.*/g, '').trim();
+
+                // short-hand matches, ie. /hld or /tw
+                $matches = $userInput.match(/\\.*?(?=\\|$)/g);
+
+                //console.log($matches ? $matches.length + ' matches.' : 'no matches.');
+
+                $catMatch = '';
+                $periodMatch = 0;
+                $mArray = new Array();
+
+                if ($matches) {
+
+                    for (var m = 0; m < $matches.length; m++) {
+
+                        // remove leading slash, and trailing whitespace.
+                        $matches[m] = $matches[m].substring(1).trim();
+                        $boundaryRegex = '';
+
+                        for (var i = 0; i < $matches[m].length; i++)
+                            $boundaryRegex += '\\b[' + $matches[m].charAt(i) + '].*?';
+
+                        $regex = new RegExp($boundaryRegex, 'i');
+
+                        //console.log($regex);
+                    
+                        if ($matches.length == 1 || m == 0)
+                            $catMatch = categories.find(x => $regex.test(x));
+                        if ($matches.length == 1 || m == 1)
+                            $periodMatch = periodShorthand.findIndex(x => $regex.test(x));
+                    }
+                }
+
+                //console.log($catMatch ? $catMatch[0] + ' ' + $catMatch[3] : 'nope');
+                //console.log($periodMatch != null ? periods[$periodMatch] : 'nope');
+
+                $category = $catMatch ? $catMatch[0] + ' ' + $catMatch[3] : '🦚️ Miscellaneous';
+                $period = $periodMatch > -1 ? periods[$periodMatch] : 'This Week';
+
+                document.getElementById('taskHUD').innerHTML = $userInput.length > 0 ? $taskOnly + ' for ' + $category + ', ' + $period : $origHTML;
+                document.getElementsByName('cat')[0].value = $catMatch ? $catMatch[3] : 'Miscellaneous';
+                document.getElementsByName('period')[0].value = Math.max($periodMatch, 0);
+            }
+        });
+
+        function showPrompt(desc, id, cat, period) {
+
+            document.getElementById('promptID').value = id;
+            document.getElementById('promptCat').value = cat;
+            document.getElementById('promptPeriod').value = period;
+            document.getElementById('hiddenprompt').style.visibility = 'visible';
+            document.getElementsByName('deleteLink')[0].href = 'todo.php?deleteRecord='+id;
+
+            var promptDesc = document.getElementById('promptDesc');            
+            promptDesc.value = desc;
+            promptDesc.focus();
+            promptDesc.select();
+        }
+
+        function submitPrompt() {
+
+            document.getElementById('promptForm').submit();
+        }
+
+        function cancelDelete() {
+
+            document.getElementById('hiddenprompt').style.visibility = 'hidden';
+        }
     </script>
 </html>
