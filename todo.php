@@ -73,7 +73,7 @@ function deleteRecord($id, $cachefile) {
     $entries = getRecords();
 
     // cache deleted task.
-    file_put_contents($cachefile, $entries[$id]);
+    file_put_contents($cachefile, $entries[$id] . "\n\n", FILE_APPEND);
     // remove task.
     array_splice($entries, $id, 1);
     // update list.txt
@@ -117,7 +117,7 @@ else if(isset($_POST['edit']) && strlen($_POST['desc']) > 0) {
     $entry = explode("\n", $entries[$id]);
 
     // cache pre-edited task.
-    file_put_contents('edit-cache.txt', $entries[$id], FILE_APPEND);
+    file_put_contents('edit-cache.txt', $entries[$id] . "\n\n", FILE_APPEND);
 
     $entry[0] = isset($_POST['cat']) ? $_POST['cat'] : 'Miscellaneous';
     $entry[1] = $_POST['desc'];
@@ -127,7 +127,7 @@ else if(isset($_POST['edit']) && strlen($_POST['desc']) > 0) {
     $entries[$id] = $entry;
 
     // cache post-edited task.
-    file_put_contents('edit-cache.txt', $entries[$id], FILE_APPEND);
+    file_put_contents('edit-cache.txt', $entries[$id] . "\n\n", FILE_APPEND);
 
     // update list.txt
     $output = implode("\n\n", $entries);

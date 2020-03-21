@@ -1,4 +1,16 @@
-<?php require_once 'globals.php'; ?>
+<?php require_once 'globals.php'; 
+
+// to do
+// recover feature for bringing cache posts back from the grave ?
+// flag a default category
+// flag a default period
+// UI for adding/deleting categories ? orphaned tasks should get re-assigned to the default category.
+// move to AJAX, so we can do PHP stuff async and not have to reload page ?
+// click on a period to focus on it (hide other periods)
+// should probably add a regular search method (ie. in addition to acronym based)
+// add better shorthand for periods ('tw, nw, 2w, nm, nq, nh, ny')
+
+?>
 <html>
     <title>two.dew</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -116,7 +128,7 @@
                             if ($task->done)
                                 $doneMark = 'undone." href="todo.php?markUndone='.$tkey.'">[X]</a></td>';
 
-                            echo $p1.$doneMark.'<td class="taskbody">'.'<span class="desc'.($task->done ? ' done' : '').'"><a href="#" onclick="showPrompt(\''.$task->desc,'\', '.$tkey.', \''.$ckey.'\', \''.$pkey.'\'); return false;">'.$task->desc.'</a></span>
+                            echo $p1.$doneMark.'<td class="taskbody">'.'<span class="desc'.($task->done ? ' done' : '').'"><a href="#" onclick="showPrompt(\''.addslashes($task->desc),'\', '.$tkey.', \''.$ckey.'\', \''.$pkey.'\'); return false;">'.$task->desc.'</a></span>
                             </td></tr>'."\n";
                         }
 
@@ -144,7 +156,7 @@
     <div id="hiddenprompt" style="visibility: hidden;">
         <form action="todo.php" method="post" id="promptForm">
             <input type="text" id="promptDesc" name="desc"></input>
-            <select name="cat" id="promptCat">
+            <select name="cat" onchange="onPromptCatChange()" id="promptCat">
             <?php  
                 foreach($CATEGORIES as $k => $v)
                     echo "\t\t\t".'<option value="'.$k.'">' . $v->emoji . ' ' . $k . '</option>' . "\n"; 
@@ -267,8 +279,14 @@
 
                         //console.log($regex);
                     
-                        if ($matches.length == 1 || m == 0)
-                            $catMatch = categories.find(x => $regex.test(x));
+                        if ($matches.length == 1 || m == 0) {
+
+                            // search custom shorthands first.
+                            $catMatch = categories.find(x => x[4] ? x[4].includes($matches[m]) : null);
+                            // if that turns up nil, use our acronym search method.
+                            if (!$catMatch)
+                                $catMatch = categories.find(x => $regex.test(x[3]));
+                        }
                         if ($matches.length == 1 || m == 1)
                             $periodMatch = periodShorthand.findIndex(x => $regex.test(x));
                     }
@@ -280,14 +298,21 @@
                 $category = $catMatch ? $catMatch[0] + ' ' + $catMatch[3] : '🦚️ Miscellaneous';
                 $period = $periodMatch > -1 ? periods[$periodMatch] : 'This Week';
 
-                document.getElementById('taskHUD').innerHTML = $userInput.length > 0 ? $taskOnly + ' for ' + $category + ', ' + $period : $origHTML;
+                document.getElementById('taskHUD').innerHTML = $userInput.length > 0 ? 'for ' + $category + ', ' + $period : $origHTML;
                 document.getElementsByName('cat')[0].value = $catMatch ? $catMatch[3] : 'Miscellaneous';
                 document.getElementsByName('period')[0].value = Math.max($periodMatch, 0);
             }
         });
 
+        function onPromptCatChange() {
+
+            var cat = document.getElementById('promptCat').value;
+            document.getElementById('hiddenprompt').style.backgroundColor = categories.filter( (x) => x[3] == cat )[0][1];
+        }
+
         function showPrompt(desc, id, cat, period) {
 
+            document.getElementById('hiddenprompt').style.backgroundColor = categories.filter( (x) => x[3] == cat )[0][1];
             document.getElementById('promptID').value = id;
             document.getElementById('promptCat').value = cat;
             document.getElementById('promptPeriod').value = period;
@@ -297,7 +322,7 @@
             var promptDesc = document.getElementById('promptDesc');            
             promptDesc.value = desc;
             promptDesc.focus();
-            promptDesc.select();
+            //promptDesc.select();
         }
 
         function submitPrompt() {

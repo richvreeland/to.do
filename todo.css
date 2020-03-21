@@ -33,7 +33,7 @@ body {
 
 div#container {
     min-height: 100vh;
-    background: linear-gradient(#2b243500, #2b2435FF);
+    background: linear-gradient(transparent, #2b2435FF);
 }
 
 input {
@@ -41,9 +41,8 @@ input {
 }
 
 input, select {
-    background-color: #1c172400;
+    background-color: transparent;
     border: none;
-    caret-color: #706676;
 }
 
 input[name="desc"] {
@@ -53,7 +52,7 @@ input[name="desc"] {
     margin-bottom: 0.5em;
     padding-left: 0.75em;
     margin-bottom: -0.75em;
-    background: linear-gradient(#2b2435, #00000000);
+    background: linear-gradient(#2b2435FF, transparent);
 }
 
 input::placeholder {
@@ -132,11 +131,11 @@ ul.category table {
 
 
 div.period {
-    background: linear-gradient(#2b243500, #2b2435AA 10%,  #2b2435AA 90%, #2b243500 100%);
+    background: linear-gradient(transparent, #2b2435AA 10%,  #2b2435AA 90%, transparent 100%);
 }
 
 div:last-of-type {
-    background: linear-gradient(#2b243500, #2b2435AA 10%);
+    background: linear-gradient(transparent, #2b2435AA 10%);
 }
 
 tr.cTitle td {
@@ -203,7 +202,7 @@ a#toggle {
     border-radius: 1em;
 
     position: fixed;
-    top: 40%;
+    top: 30%;
     left: 10%;
     right:10%;
 }
@@ -230,7 +229,7 @@ a#toggle {
     font-size: 1em;
     background-color: #2b243588;
 
-    margin: 0 0 0.5em 0;
+    margin: 0 0 0.75em 0;
     border-radius: 0.5em;
     padding: 1em;
 }
@@ -239,9 +238,14 @@ a#toggle {
 
     background-color: #2b243588;
     height: 2em;
-    vertical-align: middle;
+    vertical-align: top;
+    margin-bottom: 0.5em;
     font-size: 0.8em;
-    margin: 0 0 2em 0;
+}
+
+#hiddenprompt select:last-of-type {
+
+    margin-bottom: 3em;
 }
 
 #hiddenprompt p {
