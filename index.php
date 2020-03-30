@@ -49,7 +49,9 @@
                 list($cat, $desc, $timestamp, $done) = array_pad(explode("\n", $e), 4, null);
 
                     $period = 6;
-                if ($timestamp < NEXT_WEEK)
+                if ($timestamp < THIS_WEEK && $done == 'closed' && $i++)
+                    continue; // don't show tasks that are done, with past timestamps.
+                else if ($timestamp < NEXT_WEEK)
                     $period = 0;
                 else if ($timestamp < TWO_WEEKS)
                     $period = 1;
