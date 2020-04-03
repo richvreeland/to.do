@@ -47,6 +47,7 @@ function markRecord($done, $id) {
 
     $entries = getRecords();
     $entry = explode("\n", $entries[$id]);
+    $entry[2] = time();
     $entry[3] = $done ? 'closed' : 'open';
     
     // cache deleted task.
