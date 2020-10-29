@@ -1,4 +1,4 @@
-# two.dew
+# 💧️💧️ two.dew
 a task list for people who like to be both lazy and organized
 
 Welcome to my blurry, dumb task app that doesn't care about days.
