@@ -3,6 +3,8 @@ a task list for people who like to be both lazy and organized
 
 Welcome to my blurry, dumb task app that doesn't care about days.
 
+[Demo](https://disasterpeace.com/two.dew/)
+
 ## Set Up ##
 First things first : this to do app uses PHP and writes txt files, so it needs a server.
 
