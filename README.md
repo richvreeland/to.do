@@ -4,6 +4,8 @@ a task list for people who like to be both lazy and organized
 Welcome to my blurry, dumb task app that doesn't care about days.
 
 ## Set Up ##
+First things first : this to do app uses PHP and writes txt files, so it needs a server.
+
 In order to create tasks and start using this thing, you have to make some categories. Create a file called `categories.txt`. Here is an example of how it should be formatted:
 
 ```
