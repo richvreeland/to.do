@@ -2,6 +2,7 @@
 
 // to do
 // recover feature for bringing cache posts back from the grave ?
+// add an optional global deadline field for all categories
 // flag a default category
 // flag a default period
 // UI for adding/deleting categories ? orphaned tasks should get re-assigned to the default category.
@@ -9,6 +10,7 @@
 // click on a period to focus on it (hide other periods)
 // should probably add a regular search method (ie. in addition to acronym based)
 // add better shorthand for periods ('tw, nw, 2w, nm, nq, nh, ny')
+// option for inputting specific dates
 
 ?>
 <html>
