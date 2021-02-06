@@ -42,3 +42,6 @@ Tasks are timestamped and automatically move up over time.
 
 ## etc ##
 - if you ever make a profound mistake, there is a cache of deleted and edited tasks, so fret not! currently lives in a txt file, but perhaps can make this into a 'recover' feature at some point.
+
+## Some Thoughts in Hindsight ##
+Despite my best aspirations I personally ended up not using this task app. Besides learning some personal preferences around limiting the number of apps I have to manage, the main issue I found with it was that some of the blurry time windows can overlap in weird ways. A great example : when its the last week of December, 'Next Week', 'Next Month', 'Next Half', 'Next Quarter', and 'Next Year' will all move your task ahead by the same amount. It's a little weird cognitively. But it was a fun experiment and maybe it'll work for you !
